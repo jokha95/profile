@@ -21,6 +21,10 @@ import Workshops from "./workshops";
 import SideMenu from "../components/SideMenu";
 import MenuWrapper from "../components/MenuWrapper";
 import { makeStyles } from "@material-ui/core/styles";
+import { request } from "graphql-request";
+import { CONTENT_API, GET_MAIN_PAGE } from "./api/queries";
+import { GetMainPageQuery } from "@generated/graphql";
+
 // import { motion } from 'framer-motion';
 
 const useStyles = makeStyles((theme) => ({
@@ -127,4 +131,13 @@ function CV() {
     </GridWrapper>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const { page } =
+    (await request) < GetMainPageQuery > (CONTENT_API, GET_MAIN_PAGE);
+
+  return {
+    props: { page },
+  };
+};
 export default pure(CV);
