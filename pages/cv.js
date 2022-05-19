@@ -25,7 +25,7 @@ import { request } from "graphql-request";
 import { CONTENT_API, GET_MAIN_PAGE } from "./api/queries";
 import { GetMainPageQuery } from "@generated/graphql";
 
-// import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -39,6 +39,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 5,
   },
 }));
+
+const [width, setWidth] = useState(0);
+const [x, setX] = useState(0);
+
+const props = useSpring({
+  height: 50,
+  width: width,
+  translateX: x,
+});
+console.log(props);
+const handleMouseEnter = (e: any) => {
+  setWidth(e.target.offsetWidth);
+  setX(e.target.offsetLeft);
+};
+const handleMouseLeave = (e: any) => {
+  setWidth(0);
+};
 
 function CV() {
   const classes = useStyles();
@@ -68,7 +85,24 @@ function CV() {
       ></Header>
       <div style={{ width: "100%", height: "100px", flex: 1 }}>
         <Paper square>
-          {/* <motion.div initial={{ y: '-50vh', opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: '100vh', opacity: 0 }}> */}
+          <motion.div
+            initial={{ y: "-50vh", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "100vh", opacity: 0 }}
+          ></motion.div>
+
+          <animated.div style={props} />
+          {navItems.map((item) => (
+            <a
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              href={item.href}
+              key={item.title}
+            >
+              {item.title}
+            </a>
+          ))}
+
           <Tabs
             value={value}
             indicatorColor="primary"
